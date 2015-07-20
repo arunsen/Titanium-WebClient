@@ -89,8 +89,8 @@ function webClient(method, url, data, onSuccess, onError, extraParams) {
         var data = {};
 
         result.status = "error";
-        result.Message = "Failed to retrieve the location as network connectivity is unavailable.";
-        data.error = "Failed to retrieve the location as network connectivity is unavailable.";
+        result.Message = "An error occurred while accessing network.";
+        data.error = "An error occurred while accessing network.";
         result.data = data;
         result.ErrorCode = 404;
         onError(result);
@@ -100,7 +100,7 @@ function webClient(method, url, data, onSuccess, onError, extraParams) {
 function getErrorResponse(errorObject, errorCode, message) {
     var result = {};
     var data = {};
-    var message = "An unexpected error occurred while accessing network.";
+    var message = "An error occurred while accessing network.";
 
     result.status = "error";
 
@@ -110,38 +110,16 @@ function getErrorResponse(errorObject, errorCode, message) {
         if (errorObject.error.indexOf("HTTP error", 0) !== -1) {
 
             result.ErrorCode = errorObject.code;
-            result.Message = "An unexpected error occurred while accessing network.";
-            data.error = "An unexpected error occurred while accessing network.";
+            result.Message = "An error occurred while accessing network.";
+            data.error = "An error occurred while accessing network.";
             result.data = data;
         } else if (errorObject.error.indexOf("The request timed out", 0) !== -1) {
             result.ErrorCode = errorObject.code;
             result.Message = "The request has timed out.";
-            data.error = "An unexpected error occurred while accessing network.";
+            data.error = "An error occurred while accessing network.";
             result.data = data;
         }
 
-    } else if (errorCode != null) {
-
-        if (errorCode === 404) {
-
-            result.ErrorCode = errorCode;
-
-            if (message != null && message !== "") {
-                result.Message = message;
-            } else {
-                result.Message = "Failed to retrieve the location as network connectivity is unavailable.";
-            }
-            data.error = "Failed to retrieve the location as network connectivity is unavailable.";
-            result.data = data;
-
-        } else {
-
-            result.ErrorCode = errorCode;
-            data.error = message;
-            result.data = data;
-            result.Message = message;
-        }
-    }
-
+    } 
     return result;
 }
